@@ -1,0 +1,54 @@
+name: Generate MessageFlow Docs
+on:
+  repository_dispatch:
+    types: [ source-update ]
+
+permissions:                            
+  contents: write
+
+jobs:
+  generate-messageflow-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout aggregator repo
+        uses: actions/checkout@v4
+
+      - name: Checkout source repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.client_payload.source_repo }}
+          path: temp-source
+          token: ${{ secrets.INTEGRATION_PAT }}
+
+      - name: Configure Git as the bot
+        run: |
+          git config user.name  "messageflow-ci-bot"
+          git config user.email "messageflow-ci-bot@example.com"
+
+      - name: Copy asyncapi files to appropriate folder
+        run: |
+          mkdir -p deps/${{ github.event.client_payload.source_repo }}
+          find temp-source -type f \( -name "*.yaml" -o -name "*.yml" \) -exec grep -l "asyncapi:" {} \; | while read -r file; do
+            FILENAME=$(basename "$file")
+            cp $file "deps/${{ github.event.client_payload.source_repo }}/$FILENAME"
+          done
+          rm -rf temp-source
+
+      - name: Generate docs
+        run: |
+          docker run --rm \
+            --user $(id -u):$(id -g) \
+            -v ${{ github.workspace }}:/src \
+            ghcr.io/holydocs/messageflow:latest \
+            gen-docs --dir src/deps --output src/docs
+
+      - name: Commit & push (if anything changed)
+        env:
+          PAT: ${{ secrets.INTEGRATION_PAT }}
+        run: |
+          if ! (git diff-index --quiet HEAD -- && [ -z "$(git ls-files --others --exclude-standard)" ]); then
+            git add -A
+            git commit -m "Sync: ${{ github.event.client_payload.source_repo }} @ ${{ github.event.client_payload.source_sha }}"
+            git remote set-url origin "https://x-access-token:${PAT}@github.com/${GITHUB_REPOSITORY}"
+            git push
+          fi
