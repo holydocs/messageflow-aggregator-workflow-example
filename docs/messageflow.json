@@ -1,0 +1,60 @@
+{
+  "schema": {
+    "services": [
+      {
+        "name": "User Service",
+        "description": "A service that manages user information, profiles, and authentication.\nHandles user data requests, profile updates, and user lifecycle events.\n",
+        "operations": [
+          {
+            "action": "receive",
+            "channel": {
+              "name": "user.info.request",
+              "message": {
+                "name": "UserInfoRequestMessage",
+                "payload": "{\n  \"user_id\": \"string[uuid]\"\n}"
+              }
+            },
+            "reply": {
+              "name": "user.info.request",
+              "message": {
+                "name": "UserInfoReplyMessage",
+                "payload": "{\n  \"email\": \"string[email]\",\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  },\n  \"language\": \"string\",\n  \"name\": \"string\",\n  \"timezone\": \"string\",\n  \"user_id\": \"string[uuid]\"\n}"
+              }
+            }
+          },
+          {
+            "action": "send",
+            "channel": {
+              "name": "notification.preferences.update",
+              "message": {
+                "name": "PreferencesUpdateMessage",
+                "payload": "{\n  \"preferences\": {\n    \"categories\": {\n      \"marketing\": \"boolean\",\n      \"security\": \"boolean\",\n      \"updates\": \"boolean\"\n    },\n    \"email_enabled\": \"boolean\",\n    \"push_enabled\": \"boolean\",\n    \"quiet_hours\": {\n      \"enabled\": \"boolean\",\n      \"end\": \"string[time]\",\n      \"start\": \"string[time]\"\n    },\n    \"sms_enabled\": \"boolean\"\n  },\n  \"updated_at\": \"string[date-time]\",\n  \"user_id\": \"string[uuid]\"\n}"
+              }
+            }
+          },
+          {
+            "action": "send",
+            "channel": {
+              "name": "user.analytics",
+              "message": {
+                "name": "UserAnalyticsEventMessage",
+                "payload": "{\n  \"event_id\": \"string[uuid]\",\n  \"event_type\": \"string[enum:user_registered,user_logged_in,profile_updated,preferences_changed,account_deleted]\",\n  \"metadata\": {\n    \"environment\": \"string[enum:development,staging,production]\",\n    \"platform\": \"string[enum:ios,android,web]\",\n    \"source\": \"string[enum:mobile,web,api]\",\n    \"version\": \"string\"\n  },\n  \"timestamp\": \"string[date-time]\",\n  \"user_id\": \"string[uuid]\"\n}"
+              }
+            }
+          },
+          {
+            "action": "send",
+            "channel": {
+              "name": "user.info.update",
+              "message": {
+                "name": "UserInfoUpdateMessage",
+                "payload": "{\n  \"changes\": \"object\",\n  \"metadata\": {\n    \"environment\": \"string[enum:development,staging,production]\",\n    \"platform\": \"string[enum:ios,android,web]\",\n    \"source\": \"string[enum:mobile,web,api]\",\n    \"version\": \"string\"\n  },\n  \"updated_at\": \"string[date-time]\",\n  \"user_id\": \"string[uuid]\"\n}"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "changelogs": null
+}
