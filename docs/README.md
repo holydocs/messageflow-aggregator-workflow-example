@@ -15,7 +15,6 @@
   - [campaign.analytics](#campaignanalytics)
   - [campaign.create](#campaigncreate)
   - [campaign.execute](#campaignexecute)
-  - [campaign.status](#campaignstatus)
   - [notification.analytics](#notificationanalytics)
   - [notification.preferences.get](#notificationpreferencesget)
   - [notification.preferences.update](#notificationpreferencesupdate)
@@ -338,31 +337,6 @@ Handles user data requests, profile updates, and user lifecycle events.
 }
 ```
 
-### campaign.status
-
-![campaign.status Channel Services](diagrams/channel_campaignstatus.svg)
-
-#### Messages
-**CampaignStatusUpdateMessage**
-```json
-{
-  "campaign_id": "string[uuid]",
-  "error": {
-    "code": "string",
-    "message": "string"
-  },
-  "execution_id": "string[uuid]",
-  "progress": {
-    "failed": "integer",
-    "sent": "integer",
-    "success_rate": "number[float]",
-    "total_targets": "integer"
-  },
-  "status": "string[enum:pending,running,completed,failed,paused,cancelled]",
-  "updated_at": "string[date-time]"
-}
-```
-
 ### notification.analytics
 
 ![notification.analytics Channel Services](diagrams/channel_notificationanalytics.svg)
@@ -532,6 +506,9 @@ Handles user data requests, profile updates, and user lifecycle events.
 ```
 
 ## Changelog
+
+### 2025-07-26
+- **removed** channel: 'send' on channel 'campaign.status' was removed from service 'Campaign Service'
 
 ### 2025-07-26
 - **added** service: 'Analytics Service' was added

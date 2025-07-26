@@ -111,16 +111,6 @@
           {
             "action": "send",
             "channel": {
-              "name": "campaign.status",
-              "message": {
-                "name": "CampaignStatusUpdateMessage",
-                "payload": "{\n  \"campaign_id\": \"string[uuid]\",\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  },\n  \"execution_id\": \"string[uuid]\",\n  \"progress\": {\n    \"failed\": \"integer\",\n    \"sent\": \"integer\",\n    \"success_rate\": \"number[float]\",\n    \"total_targets\": \"integer\"\n  },\n  \"status\": \"string[enum:pending,running,completed,failed,paused,cancelled]\",\n  \"updated_at\": \"string[date-time]\"\n}"
-              }
-            }
-          },
-          {
-            "action": "send",
-            "channel": {
               "name": "notification.user.{user_id}.push",
               "message": {
                 "name": "PushNotificationMessage",
@@ -301,6 +291,18 @@
           "name": "Notification Service",
           "details": "'Notification Service' was added",
           "timestamp": "2025-07-26T17:26:21.091839295Z"
+        }
+      ]
+    },
+    {
+      "date": "2025-07-26T17:32:14.488968708Z",
+      "changes": [
+        {
+          "type": "removed",
+          "category": "channel",
+          "name": "Campaign Service:send-campaign.status-CampaignStatusUpdateMessage",
+          "details": "'send' on channel 'campaign.status' was removed from service 'Campaign Service'",
+          "timestamp": "2025-07-26T17:32:14.488968708Z"
         }
       ]
     }
