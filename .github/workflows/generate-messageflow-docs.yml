@@ -27,10 +27,10 @@ jobs:
 
       - name: Copy asyncapi files to appropriate folder
         run: |
-          mkdir -p deps/${{ github.event.client_payload.source_repo }}
+          mkdir -p source/${{ github.event.client_payload.source_repo }}
           find temp-source -type f \( -name "*.yaml" -o -name "*.yml" \) -exec grep -l "asyncapi:" {} \; | while read -r file; do
             FILENAME=$(basename "$file")
-            cp $file "deps/${{ github.event.client_payload.source_repo }}/$FILENAME"
+            cp $file "source/${{ github.event.client_payload.source_repo }}/$FILENAME"
           done
           rm -rf temp-source
 
@@ -38,9 +38,9 @@ jobs:
         run: |
           docker run --rm \
             --user $(id -u):$(id -g) \
-            -v ${{ github.workspace }}:/src \
+            -v ${{ github.workspace }}:/wrk \
             ghcr.io/holydocs/messageflow:latest \
-            gen-docs --dir src/deps --output src/docs
+            gen-docs --dir wrk/source --output wrk/docs
 
       - name: Commit & push (if anything changed)
         env:
