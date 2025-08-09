@@ -374,6 +374,10 @@ components:
             type: string
             format: date-time
             description: When the insight was created
+          updated_at:
+            type: string
+            format: date-time
+            description: When the insight was updated
           metadata:
             $ref: '#/components/schemas/Metadata'
         required:

@@ -113,6 +113,9 @@ components:
           description:
             type: string
             description: Campaign description
+          status:
+            type: string
+            description: Campaign status
           target_audience:
             $ref: '#/components/schemas/TargetAudience'
           notification_template:

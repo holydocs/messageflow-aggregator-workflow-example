@@ -18,7 +18,7 @@
   - [notification.analytics](#notificationanalytics)
   - [notification.preferences.get](#notificationpreferencesget)
   - [notification.preferences.update](#notificationpreferencesupdate)
-  - [notification.user.{user_id}.push](#notificationuseruseridpush)
+  - [notification.user.{user_id}.push](#notificationuseruser_idpush)
   - [user.analytics](#useranalytics)
   - [user.info.request](#userinforequest)
   - [user.info.update](#userinfoupdate)
@@ -126,7 +126,8 @@ Handles user data requests, profile updates, and user lifecycle events.
     "string"
   ],
   "severity": "string[enum:low,medium,high,critical]",
-  "title": "string"
+  "title": "string",
+  "updated_at": "string[date-time]"
 }
 ```
 
@@ -289,6 +290,7 @@ Handles user data requests, profile updates, and user lifecycle events.
     "rate_limit": "integer",
     "respect_quiet_hours": "boolean"
   },
+  "status": "string",
   "target_audience": {
     "estimated_reach": "integer",
     "user_filters": {
@@ -422,7 +424,7 @@ Handles user data requests, profile updates, and user lifecycle events.
 
 ### notification.user.{user_id}.push
 
-![notification.user.{user_id}.push Channel Services](diagrams/channel_notificationuseruseridpush.svg)
+![notification.user.{user_id}.push Channel Services](diagrams/channel_notificationuseruser_idpush.svg)
 
 #### Messages
 **PushNotificationMessage**
@@ -506,6 +508,136 @@ Handles user data requests, profile updates, and user lifecycle events.
 ```
 
 ## Changelog
+
+### 2025-08-09
+- **changed** message: Messages changed for operation 'send' on channel 'analytics.insights' in service 'Analytics Service'
+```json
+  []messageflow.Message{
+  	{
+  		Name: "AnalyticsInsightMessage",
+  		Payload: (
+  			"""
+  			... // 17 identical lines
+  			    "string"
+  			  ],
+- 			  "removed_at": "string[date-time]",
+  			  "severity": "string[enum:low,medium,high,critical]",
+- 			  "title": "string"
++ 			  "title": "string",
++ 			  "updated_at": "string[date-time]"
+  			}
+  			"""
+  		),
+  	},
+  }
+
+```
+- **changed** message: Messages changed for operation 'receive' on channel 'campaign.create' in service 'Campaign Service'
+```json
+  []messageflow.Message{
+  	{
+  		Name: "CampaignCreateMessage",
+  		Payload: (
+  			"""
+  			... // 48 identical lines
+  			    "respect_quiet_hours": "boolean"
+  			  },
++ 			  "status": "string",
+  			  "target_audience": {
+  			    "estimated_reach": "integer",
+  			... // 21 identical lines
+  			"""
+  		),
+  	},
+  }
+
+```
+
+### 2025-08-09
+- **changed** message: Messages changed for operation 'send' on channel 'analytics.insights' in service 'Analytics Service'
+```json
+  []messageflow.Message{
+  	{
+  		Name: "AnalyticsInsightMessage",
+  		Payload: (
+  			"""
+  			... // 17 identical lines
+  			    "string"
+  			  ],
++ 			  "removed_at": "string[date-time]",
+  			  "severity": "string[enum:low,medium,high,critical]",
+  			  "title": "string"
+  			}
+  			"""
+  		),
+  	},
+  }
+
+```
+
+### 2025-08-09
+- **changed** message: Messages changed for operation 'send' on channel 'analytics.insights' in service 'Analytics Service'
+```json
+  []messageflow.Message{
+  	{
+  		Name: "AnalyticsInsightMessage",
+  		Payload: (
+  			"""
+  			... // 18 identical lines
+  			  ],
+  			  "severity": "string[enum:low,medium,high,critical]",
+- 			  "title": "string",
+- 			  "updadet_at": "string[date-time]"
++ 			  "title": "string"
+  			}
+  			"""
+  		),
+  	},
+  }
+
+```
+
+### 2025-08-09
+- **added** channel: 'receive' on channel 'analytics.report.request' was added to service 'Analytics Service'
+- **added** channel: 'receive' on channel 'campaign.analytics' was added to service 'Analytics Service'
+- **added** channel: 'receive' on channel 'notification.analytics' was added to service 'Analytics Service'
+- **added** channel: 'receive' on channel 'user.analytics' was added to service 'Analytics Service'
+- **added** channel: 'send' on channel 'analytics.alert' was added to service 'Analytics Service'
+- **added** channel: 'send' on channel 'analytics.insights' was added to service 'Analytics Service'
+- **added** channel: 'receive' on channel 'campaign.create' was added to service 'Campaign Service'
+- **added** channel: 'receive' on channel 'campaign.execute' was added to service 'Campaign Service'
+- **added** channel: 'send' on channel 'campaign.analytics' was added to service 'Campaign Service'
+- **added** channel: 'send' on channel 'notification.user.{user_id}.push' was added to service 'Campaign Service'
+- **added** channel: 'send' on channel 'user.info.request' was added to service 'Campaign Service'
+- **added** channel: 'receive' on channel 'notification.preferences.get' was added to service 'Notification Service'
+- **added** channel: 'receive' on channel 'notification.preferences.update' was added to service 'Notification Service'
+- **added** channel: 'receive' on channel 'notification.user.{user_id}.push' was added to service 'Notification Service'
+- **added** channel: 'send' on channel 'notification.analytics' was added to service 'Notification Service'
+- **added** channel: 'send' on channel 'user.info.request' was added to service 'Notification Service'
+- **added** channel: 'receive' on channel 'user.info.request' was added to service 'User Service'
+- **added** channel: 'send' on channel 'notification.preferences.update' was added to service 'User Service'
+- **added** channel: 'send' on channel 'user.analytics' was added to service 'User Service'
+- **added** channel: 'send' on channel 'user.info.update' was added to service 'User Service'
+- **removed** channel: 'receive' on channel 'analytics.report.request' was removed from service 'Analytics Service'
+- **removed** channel: 'receive' on channel 'campaign.analytics' was removed from service 'Analytics Service'
+- **removed** channel: 'receive' on channel 'notification.analytics' was removed from service 'Analytics Service'
+- **removed** channel: 'receive' on channel 'user.analytics' was removed from service 'Analytics Service'
+- **removed** channel: 'send' on channel 'analytics.alert' was removed from service 'Analytics Service'
+- **removed** channel: 'send' on channel 'analytics.insights' was removed from service 'Analytics Service'
+- **removed** channel: 'receive' on channel 'campaign.create' was removed from service 'Campaign Service'
+- **removed** channel: 'receive' on channel 'campaign.execute' was removed from service 'Campaign Service'
+- **removed** channel: 'send' on channel 'campaign.analytics' was removed from service 'Campaign Service'
+- **removed** channel: 'send' on channel 'notification.user.{user_id}.push' was removed from service 'Campaign Service'
+- **removed** channel: 'send' on channel 'user.info.request' was removed from service 'Campaign Service'
+- **removed** channel: 'receive' on channel 'notification.preferences.get' was removed from service 'Notification Service'
+- **removed** channel: 'receive' on channel 'notification.preferences.update' was removed from service 'Notification Service'
+- **removed** channel: 'receive' on channel 'notification.user.{user_id}.push' was removed from service 'Notification Service'
+- **removed** channel: 'send' on channel 'notification.analytics' was removed from service 'Notification Service'
+- **removed** channel: 'send' on channel 'user.info.request' was removed from service 'Notification Service'
+- **removed** channel: 'receive' on channel 'user.info.request' was removed from service 'User Service'
+- **removed** channel: 'send' on channel 'notification.preferences.update' was removed from service 'User Service'
+- **removed** channel: 'send' on channel 'user.analytics' was removed from service 'User Service'
+- **removed** channel: 'send' on channel 'user.info.update' was removed from service 'User Service'
 
 ### 2025-07-26
 - **removed** channel: 'send' on channel 'campaign.status' was removed from service 'Campaign Service'

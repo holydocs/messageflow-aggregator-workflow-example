@@ -20,11 +20,6 @@ jobs:
           path: temp-source
           token: ${{ secrets.INTEGRATION_PAT }}
 
-      - name: Configure Git as the bot
-        run: |
-          git config user.name  "messageflow-ci-bot"
-          git config user.email "messageflow-ci-bot@example.com"
-
       - name: Copy asyncapi files to appropriate folder
         run: |
           mkdir -p source/${{ github.event.client_payload.source_repo }}
@@ -34,21 +29,46 @@ jobs:
           done
           rm -rf temp-source
 
-      - name: Generate docs
+      - name: Generate docs and capture changelog
+        id: generate-docs
         run: |
-          docker run --rm \
+          OUTPUT=$(docker run --rm \
             --user $(id -u):$(id -g) \
-            -v ${{ github.workspace }}:/wrk \
+            -v ${{ github.workspace }}:/work \
             ghcr.io/holydocs/messageflow:latest \
-            gen-docs --dir wrk/source --output wrk/docs
+            gen-docs --dir work/source --output work/docs 2>&1)
+
+          echo "$OUTPUT"
+
+          if echo "$OUTPUT" | grep -q "New Changes Detected:"; then
+            CHANGELOG=$(echo "$OUTPUT" | sed -n '/New Changes Detected:/,$p' | sed '1d')
+            echo "changelog<<EOF" >> $GITHUB_OUTPUT
+            echo "$CHANGELOG" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "changelog=" >> $GITHUB_OUTPUT
+          fi
 
       - name: Commit & push (if anything changed)
         env:
           PAT: ${{ secrets.INTEGRATION_PAT }}
+          CHANGELOG: ${{ steps.generate-docs.outputs.changelog }}
         run: |
           if ! (git diff-index --quiet HEAD -- && [ -z "$(git ls-files --others --exclude-standard)" ]); then
+            git config user.name  "messageflow-ci-bot"
+            git config user.email "messageflow-ci-bot@example.com"
             git add -A
-            git commit -m "Sync: ${{ github.event.client_payload.source_repo }} @ ${{ github.event.client_payload.source_sha }}"
+
+            COMMIT_MSG="Sync: ${{ github.event.client_payload.source_repo }}@${{ github.event.client_payload.source_sha }}"
+
+            # Add changes details if available
+            if [ -n "$CHANGELOG" ]; then
+              printf "%s\n\n%s\n" "$COMMIT_MSG" "$CHANGELOG" > /tmp/commit_msg.txt
+            else
+              echo "$COMMIT_MSG" > /tmp/commit_msg.txt
+            fi
+
+            git commit -F /tmp/commit_msg.txt
             git remote set-url origin "https://x-access-token:${PAT}@github.com/${GITHUB_REPOSITORY}"
             git push
           fi
