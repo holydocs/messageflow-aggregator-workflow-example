@@ -81,7 +81,7 @@
               "messages": [
                 {
                   "name": "AnalyticsInsightMessage",
-                  "payload": "{\n  \"category\": \"string[enum:user_behavior,notification_performance,campaign_effectiveness,system_health]\",\n  \"confidence\": \"number[float]\",\n  \"created_at\": \"string[date-time]\",\n  \"data_points\": [\n    \"object\"\n  ],\n  \"description\": \"string\",\n  \"insight_id\": \"string[uuid]\",\n  \"insight_type\": \"string[enum:trend,anomaly,recommendation,alert]\",\n  \"metadata\": {\n    \"environment\": \"string[enum:development,staging,production]\",\n    \"platform\": \"string[enum:ios,android,web]\",\n    \"source\": \"string[enum:mobile,web,api]\",\n    \"version\": \"string\"\n  },\n  \"recommendations\": [\n    \"string\"\n  ],\n  \"severity\": \"string[enum:low,medium,high,critical]\",\n  \"title\": \"string\",\n  \"updated_at\": \"string[date-time]\"\n}"
+                  "payload": "{\n  \"category\": \"string[enum:user_behavior,notification_performance,campaign_effectiveness,system_health]\",\n  \"confidence\": \"number[float]\",\n  \"created_at\": \"string[date-time]\",\n  \"data_points\": [\n    \"object\"\n  ],\n  \"deleted_at\": \"string[date-time]\",\n  \"description\": \"string\",\n  \"insight_id\": \"string[uuid]\",\n  \"insight_type\": \"string[enum:trend,anomaly,recommendation,alert]\",\n  \"metadata\": {\n    \"environment\": \"string[enum:development,staging,production]\",\n    \"platform\": \"string[enum:ios,android,web]\",\n    \"source\": \"string[enum:mobile,web,api]\",\n    \"version\": \"string\"\n  },\n  \"recommendations\": [\n    \"string\"\n  ],\n  \"severity\": \"string[enum:low,medium,high,critical]\",\n  \"title\": \"string\"\n}"
                 }
               ]
             }
@@ -685,6 +685,19 @@
           "details": "Messages changed for operation 'send' on channel 'analytics.insights' in service 'Analytics Service'",
           "diff": "  []messageflow.Message{\n  \t{\n  \t\tName: \"AnalyticsInsightMessage\",\n  \t\tPayload: (\n  \t\t\t\"\"\"\n  \t\t\t... // 17 identical lines\n  \t\t\t    \"string\"\n  \t\t\t  ],\n- \t\t\t  \"removed_at\": \"string[date-time]\",\n  \t\t\t  \"severity\": \"string[enum:low,medium,high,critical]\",\n- \t\t\t  \"title\": \"string\"\n+ \t\t\t  \"title\": \"string\",\n+ \t\t\t  \"updated_at\": \"string[date-time]\"\n  \t\t\t}\n  \t\t\t\"\"\"\n  \t\t),\n  \t},\n  }\n",
           "timestamp": "2025-08-09T11:58:06.45125727Z"
+        }
+      ]
+    },
+    {
+      "date": "2025-08-09T12:02:23.189157831Z",
+      "changes": [
+        {
+          "type": "changed",
+          "category": "message",
+          "name": "Analytics Service:send-analytics.insights-AnalyticsInsightMessage",
+          "details": "Messages changed for operation 'send' on channel 'analytics.insights' in service 'Analytics Service'",
+          "diff": "  []messageflow.Message{\n  \t{\n  \t\tName: \"AnalyticsInsightMessage\",\n  \t\tPayload: (\n  \t\t\t\"\"\"\n  \t\t\t... // 5 identical lines\n  \t\t\t    \"object\"\n  \t\t\t  ],\n+ \t\t\t  \"deleted_at\": \"string[date-time]\",\n  \t\t\t  \"description\": \"string\",\n  \t\t\t  \"insight_id\": \"string[uuid]\",\n  \t\t\t... // 9 identical lines\n  \t\t\t  ],\n  \t\t\t  \"severity\": \"string[enum:low,medium,high,critical]\",\n- \t\t\t  \"title\": \"string\",\n- \t\t\t  \"updated_at\": \"string[date-time]\"\n+ \t\t\t  \"title\": \"string\"\n  \t\t\t}\n  \t\t\t\"\"\"\n  \t\t),\n  \t},\n  }\n",
+          "timestamp": "2025-08-09T12:02:23.189157831Z"
         }
       ]
     }

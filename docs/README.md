@@ -113,6 +113,7 @@ Handles user data requests, profile updates, and user lifecycle events.
   "data_points": [
     "object"
   ],
+  "deleted_at": "string[date-time]",
   "description": "string",
   "insight_id": "string[uuid]",
   "insight_type": "string[enum:trend,anomaly,recommendation,alert]",
@@ -126,8 +127,7 @@ Handles user data requests, profile updates, and user lifecycle events.
     "string"
   ],
   "severity": "string[enum:low,medium,high,critical]",
-  "title": "string",
-  "updated_at": "string[date-time]"
+  "title": "string"
 }
 ```
 
@@ -508,6 +508,34 @@ Handles user data requests, profile updates, and user lifecycle events.
 ```
 
 ## Changelog
+
+### 2025-08-09
+- **changed** message: Messages changed for operation 'send' on channel 'analytics.insights' in service 'Analytics Service'
+```json
+  []messageflow.Message{
+  	{
+  		Name: "AnalyticsInsightMessage",
+  		Payload: (
+  			"""
+  			... // 5 identical lines
+  			    "object"
+  			  ],
++ 			  "deleted_at": "string[date-time]",
+  			  "description": "string",
+  			  "insight_id": "string[uuid]",
+  			... // 9 identical lines
+  			  ],
+  			  "severity": "string[enum:low,medium,high,critical]",
+- 			  "title": "string",
+- 			  "updated_at": "string[date-time]"
++ 			  "title": "string"
+  			}
+  			"""
+  		),
+  	},
+  }
+
+```
 
 ### 2025-08-09
 - **changed** message: Messages changed for operation 'send' on channel 'analytics.insights' in service 'Analytics Service'
